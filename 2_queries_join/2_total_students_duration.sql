@@ -1,4 +1,4 @@
-SELECT count(assignment_submissions.duration) as total_duration
+SELECT assignment_submissions.duration as total_duration, 
 FROM assignment_submissions 
 JOIN students ON students.id = student_id
 JOIN cohorts ON cohorts.id = cohort_id
