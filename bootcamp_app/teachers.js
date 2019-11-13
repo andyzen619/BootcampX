@@ -9,16 +9,10 @@ const pool = new Pool({
 
 const queryParamsMonth = process.argv[2];
 const queryParamsMaxResults = process.argv[3];
+const query = 'SELECT DISTINCT cohorts.name as cohort, teachers.name as teacher FROM teachers JOIN assistance_requests ON teacher_id = teachers.id JOIN students ON student_id = students.id JOIN cohorts ON cohort_id = cohorts.id WHERE cohorts.name = $1 ORDER BY teacher;'
+const values = [queryParamsMonth]
 
-pool.query(
-  `SELECT DISTINCT cohorts.name as cohort, teachers.name as teacher
-  FROM teachers
-  JOIN assistance_requests ON teacher_id = teachers.id
-  JOIN students ON student_id = students.id
-  JOIN cohorts ON cohort_id = cohorts.id
-  WHERE cohorts.name = '${queryParamsMonth}'
-  ORDER BY teacher;`
-).then(res => {
+pool.query(query, values).then(res => {
   res.rows.forEach(user => {
     console.log(`${user.cohort}: ${user.teacher}`);
   })
